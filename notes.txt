@@ -1,0 +1,22 @@
+After defining the .env variables, restart the server for them to be read inside the code.
+Bearer token can be passed in a get request for authentication using the below syntax -
+headers: { Authorization: `Bearer ${token}` },
+
+0
+: 
+{deletedDate: null, id: 91, registrationNumber: 'SK 01 D 4016', type: 'Truck', make: 'TATA', …}
+1
+: 
+{deletedDate: null, id: 499, registrationNumber: 'SK 01 D 3859', type: 'Truck', make: null, …}
+2
+: 
+{deletedDate: null, id: 500, registrationNumber: 'SK 01 D 1824', type: 'Truck', make: null, …}
+3
+: 
+{deletedDate: null, id: 885, registrationNumber: 'SK 01 D 1759', type: 'Truck', make: null, …}
+4
+: 
+{deletedDate: null, id: 886, registrationNumber: 'SK 01 D 3858', type: 'Truck', make: null, …}
+5
+: 
+{deletedDate: null, id: 1317, registrationNumber: 'AATEST', type: 'Truck', make: null, …}
