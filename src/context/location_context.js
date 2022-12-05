@@ -18,10 +18,21 @@ export const LocationProvider = ({ children }) => {
 	const app = initializeApp(firebaseConfig);
 
 	const database = getDatabase(app);
-	const vehicleLocationRef = ref(database, `91-SK 01 D 4016/location`);
+	const vehicleLocationRef = ref(database, `117-KA 05 AH 9754/location`);
 	onValue(vehicleLocationRef, (snapshot) => {
-		console.log(snapshot.exists());
+		console.log(snapshot.val());
 	});
+
+	const folderStructure = async () => {
+		const response = await axios(
+			"https://tracknerd-staging-default-rtdb.firebaseio.com/.json"
+		);
+		console.log(response.data);
+	};
+
+	useEffect(() => {
+		folderStructure();
+	}, []);
 
 	return (
 		<LocationContext.Provider value={{}}>{children}</LocationContext.Provider>
