@@ -1,22 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 import { useLocationContext } from "../context/location_context";
-import { AllVehicles } from "../components";
+import { AllVehicles, Home } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTable, faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 const List = () => {
-	const { showMap } = useLocationContext();
+	const { showMap, setShowMap } = useLocationContext();
 
 	return (
 		<Wrapper>
 			<div className='navbar'>
 				<h1 className='navbar__heading'>TrackNerd</h1>
-				<div className={"navbar__page " + (!showMap ? "active" : "")}>
+				<div
+					className={"navbar__page " + (!showMap ? "active" : "")}
+					onClick={() => setShowMap(false)}
+				>
 					<FontAwesomeIcon icon={faTable} />
 					<h3 className={"navbar__page-name"}>Fleet</h3>
 				</div>
-				<div className={"navbar__page " + (showMap ? "active" : "")}>
+				<div
+					className={"navbar__page " + (showMap ? "active" : "")}
+					onClick={() => setShowMap(true)}
+				>
 					<FontAwesomeIcon icon={faMapLocationDot} />
 					<h3 className='navbar__page-name'>Map</h3>
 				</div>
@@ -24,6 +30,11 @@ const List = () => {
 			{!showMap && (
 				<div className='list'>
 					<AllVehicles />
+				</div>
+			)}
+			{showMap && (
+				<div className='map'>
+					<Home />
 				</div>
 			)}
 		</Wrapper>
@@ -56,6 +67,7 @@ const Wrapper = styled.div`
 			font-size: 1.6rem;
 			margin-top: 1rem;
 			padding: 1rem 0 1rem 3rem;
+			cursor: pointer;
 
 			&-name {
 				margin-left: 1rem;
@@ -69,6 +81,14 @@ const Wrapper = styled.div`
 	}
 
 	.list {
+		display: flex;
+		min-width: 60vw;
+		flex-wrap: wrap;
+		margin-left: 28vw;
+	}
+
+	.map {
+		color: #efefef;
 		display: flex;
 		min-width: 60vw;
 		flex-wrap: wrap;
