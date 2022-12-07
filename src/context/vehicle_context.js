@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { mockData } from "../utils/mockData";
+import { liveVehicles, mockData } from "../utils/mockData";
 
 const VehicleContext = React.createContext();
 
@@ -8,9 +8,16 @@ const rootUrl = "https://staging-api.tracknerd.io/v1/";
 
 export const VehicleProvider = ({ children }) => {
 	const [vehicleList, setVehicleList] = useState([]);
+	const [filteredList, setFilteredList] = useState([]);
+	const [text, setText] = useState("");
+
 	useEffect(() => {
-		setVehicleList(mockData);
+		setVehicleList([...liveVehicles, ...mockData]);
 	}, []);
+
+	useEffect(() => {
+		setFilteredList([...vehicleList]);
+	}, [vehicleList]);
 
 	// const fetchVehicle = async (url) => {
 	// 	try {
@@ -46,8 +53,23 @@ export const VehicleProvider = ({ children }) => {
 	// 	fetchVehicle(rootUrl);
 	// }, []);
 
+	useEffect(() => {
+		let tempList = [...vehicleList];
+
+		if (text) {
+			tempList = tempList.filter((vehicle) => {
+				return vehicle.registrationNumber.toLowerCase().includes(text);
+			});
+			setFilteredList([...tempList]);
+		} else {
+			setFilteredList([...vehicleList]);
+		}
+	}, [text]);
+
 	return (
-		<VehicleContext.Provider value={{ vehicleList }}>
+		<VehicleContext.Provider
+			value={{ vehicleList, text, setText, filteredList }}
+		>
 			{children}
 		</VehicleContext.Provider>
 	);

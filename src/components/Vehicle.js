@@ -1,9 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTruckFast } from "@fortawesome/free-solid-svg-icons";
+import {
+	faTruckFast,
+	faToggleOn,
+	faToggleOff,
+} from "@fortawesome/free-solid-svg-icons";
+import { useLocationContext } from "../context/location_context";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, child, get, onValue, once } from "firebase/database";
 
 const Vehicle = ({ number, type, make, model, id, status, odometer }) => {
+	const [timestamp, setTimestamp] = useState();
+
+	useEffect(() => {
+		const firebaseConfig = {
+			apiKey: process.env.REACT_APP_FIREBASE_KEY,
+			authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+			databaseUrl: process.env.REACT_APP_DATABASE_URL,
+			storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+			appId: process.env.REACT_APP_APP_ID,
+			projectId: process.env.REACT_APP_PROJECT_ID,
+		};
+
+		const app = initializeApp(firebaseConfig);
+
+		const database = getDatabase(app);
+
+		const timestampRef = ref(database, `${id}-${number}/timestamp`);
+		onValue(timestampRef, (snapshot) => {
+			setTimestamp(snapshot.val());
+			console.log(snapshot.val());
+		});
+	}, []);
+
 	return (
 		<Wrapper>
 			<div className='vehicle'>
@@ -16,7 +46,7 @@ const Vehicle = ({ number, type, make, model, id, status, odometer }) => {
 						<span>Make:</span> {make || "M&M"}
 					</h3>
 					<h3 className='vehicle__detail-model'>
-						<span>Model:</span> {model || "SUV"}
+						<span>Model:</span> {model || "LCV"}
 					</h3>
 					<h3 className='vehicle__detail-id'>
 						<span>Unique Id:</span> {id || 100}
@@ -29,8 +59,18 @@ const Vehicle = ({ number, type, make, model, id, status, odometer }) => {
 					</h3>
 				</div>
 				<div className='vehicle__icon'>
-					<FontAwesomeIcon icon={faTruckFasts} />
+					<FontAwesomeIcon icon={faTruckFast} />
 				</div>
+				{timestamp && (
+					<div className='vehicle__timestamp'>
+						<FontAwesomeIcon icon={faToggleOn} /> {timestamp}
+					</div>
+				)}
+				{!timestamp && (
+					<div className='vehicle__timestamp'>
+						<FontAwesomeIcon icon={faToggleOff} /> No Timestamp
+					</div>
+				)}
 			</div>
 		</Wrapper>
 	);
@@ -81,8 +121,14 @@ const Wrapper = styled.div`
 		}
 
 		&__icon {
-			margin-top: 1rem;
+			margin-top: 0.3rem;
 			font-size: 8rem;
+		}
+
+		&__timestamp {
+			margin-top: 0.4rem;
+			font-size: 0.8rem;
+			font-family: "Montserrat Alternates", sans-serif;
 		}
 	}
 `;

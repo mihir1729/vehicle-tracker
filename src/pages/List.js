@@ -1,26 +1,31 @@
 import React from "react";
 import styled from "styled-components";
+import { useLocationContext } from "../context/location_context";
 import { AllVehicles } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTable, faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 const List = () => {
+	const { showMap } = useLocationContext();
+
 	return (
 		<Wrapper>
 			<div className='navbar'>
 				<h1 className='navbar__heading'>TrackNerd</h1>
-				<div className='navbar__page'>
+				<div className={"navbar__page " + (!showMap ? "active" : "")}>
 					<FontAwesomeIcon icon={faTable} />
-					<h3 className='navbar__page-name'>Fleet</h3>
+					<h3 className={"navbar__page-name"}>Fleet</h3>
 				</div>
-				<div className='navbar__page'>
+				<div className={"navbar__page " + (showMap ? "active" : "")}>
 					<FontAwesomeIcon icon={faMapLocationDot} />
 					<h3 className='navbar__page-name'>Map</h3>
 				</div>
 			</div>
-			<div className='list'>
-				<AllVehicles />
-			</div>
+			{!showMap && (
+				<div className='list'>
+					<AllVehicles />
+				</div>
+			)}
 		</Wrapper>
 	);
 };
@@ -29,8 +34,10 @@ const Wrapper = styled.div`
 	display: flex;
 
 	.navbar {
-		width: 60vw;
+		width: 21vw;
+		min-height: 100vh;
 		background: #181818;
+		position: fixed;
 
 		&__heading {
 			font-family: "Ubuntu", sans-serif;
@@ -47,7 +54,8 @@ const Wrapper = styled.div`
 			height: 2rem;
 			color: #969696;
 			font-size: 1.6rem;
-			margin: 3rem 0 0 3rem;
+			margin-top: 1rem;
+			padding: 1rem 0 1rem 3rem;
 
 			&-name {
 				margin-left: 1rem;
@@ -55,12 +63,16 @@ const Wrapper = styled.div`
 				letter-spacing: 0.25rem;
 			}
 		}
+		.active {
+			background: black;
+		}
 	}
 
 	.list {
 		display: flex;
+		min-width: 60vw;
 		flex-wrap: wrap;
-		margin-left: 7vw;
+		margin-left: 28vw;
 	}
 `;
 

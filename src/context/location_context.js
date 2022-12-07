@@ -6,36 +6,23 @@ import { getDatabase, ref, child, get, onValue, once } from "firebase/database";
 const LocationContext = React.createContext();
 
 export const LocationProvider = ({ children }) => {
-	// const firebaseConfig = {
-	// 	apiKey: process.env.REACT_APP_FIREBASE_KEY,
-	// 	authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-	// 	databaseUrl: process.env.REACT_APP_DATABASE_URL,
-	// 	storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-	// 	appId: process.env.REACT_APP_APP_ID,
-	// 	projectId: process.env.REACT_APP_PROJECT_ID,
-	// };
+	const [showMap, setShowMap] = useState(false);
 
-	// const app = initializeApp(firebaseConfig);
+	const folderStructure = async () => {
+		const response = await axios(
+			"https://tracknerd-staging-default-rtdb.firebaseio.com/.json"
+		);
+		console.log(response.data);
+	};
 
-	// const database = getDatabase(app);
-	// const vehicleLocationRef = ref(database, `117-KA 05 AH 9754/location`);
-	// onValue(vehicleLocationRef, (snapshot) => {
-	// 	console.log(snapshot.val());
-	// });
-
-	// const folderStructure = async () => {
-	// 	const response = await axios(
-	// 		"https://tracknerd-staging-default-rtdb.firebaseio.com/.json"
-	// 	);
-	// 	console.log(response.data);
-	// };
-
-	// useEffect(() => {
-	// 	folderStructure();
-	// }, []);
+	useEffect(() => {
+		folderStructure();
+	}, []);
 
 	return (
-		<LocationContext.Provider value={{}}>{children}</LocationContext.Provider>
+		<LocationContext.Provider value={{ showMap, setShowMap }}>
+			{children}
+		</LocationContext.Provider>
 	);
 };
 
