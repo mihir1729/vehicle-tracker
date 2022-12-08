@@ -16,7 +16,6 @@ const Navbar = () => {
 						className={
 							"navbar__page " + (location.pathname === "/" ? "active" : "")
 						}
-						onClick={() => setShowMap(false)}
 					>
 						<FontAwesomeIcon icon={faTable} />
 						<h3 className='navbar__page-name'>Fleet</h3>
@@ -27,7 +26,6 @@ const Navbar = () => {
 						className={
 							"navbar__page " + (location.pathname === "/map" ? "active" : "")
 						}
-						onClick={() => setShowMap(true)}
 					>
 						<FontAwesomeIcon icon={faMapLocationDot} />
 						<h3 className='navbar__page-name'>Map</h3>

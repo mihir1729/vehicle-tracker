@@ -8,9 +8,10 @@ In the vehicles array, there is no such vehicle whose location can be fetched fr
 router dom - done
 markers and their updates - done
 select a vehicle with ignition and movement true also speed greater than 10 - done
-map component reload - showMap error - 
+map component reload - showMap error - done
 reducer
+set default vehicle id at the last iteration of loop
 refactoring - array map jsx code for repititions
 read react hooks and see where they apply - useMemo
-website responsiveness
+website responsiveness & css 
 project documentation - assumptions, deploy, build locally, explanation of key assessment requirements

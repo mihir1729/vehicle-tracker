@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, child, get, onValue, once } from "firebase/database";
 
 const LocationContext = React.createContext();
 
@@ -42,7 +40,7 @@ export const LocationProvider = ({ children }) => {
 	}, []);
 
 	return (
-		<LocationContext.Provider value={{ showMap, setShowMap, trackingId }}>
+		<LocationContext.Provider value={{ trackingId }}>
 			{children}
 		</LocationContext.Provider>
 	);

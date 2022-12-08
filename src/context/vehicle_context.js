@@ -1,12 +1,28 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import axios from "axios";
 import { liveVehicles, mockData } from "../utils/mockData";
+import reducer from "../reducer/vehicle_reducer";
+import {
+	GET_VEHICLES_BEGIN,
+	GET_VEHICLES_SUCCESS,
+	GET_VEHICLES_ERROR,
+} from "../actions";
+
+const initialState = {
+	vehicleList: [],
+	vehicleList_loading: false,
+	vehicleList_error: false,
+	filteredList: [],
+	text: "",
+};
 
 const VehicleContext = React.createContext();
 
 const rootUrl = "https://staging-api.tracknerd.io/v1/";
 
 export const VehicleProvider = ({ children }) => {
+	const [state, dispatch] = useReducer(reducer, initialState);
+
 	const [vehicleList, setVehicleList] = useState([]);
 	const [filteredList, setFilteredList] = useState([]);
 	const [text, setText] = useState("");
