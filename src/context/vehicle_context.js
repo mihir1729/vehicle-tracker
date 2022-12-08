@@ -57,7 +57,7 @@ export const VehicleProvider = ({ children }) => {
 			}
 		} catch (error) {
 			dispatch({ type: GET_VEHICLES_ERROR });
-			console.log(error.response); //remove this line after everything is fine
+			console.log(error.response);
 		}
 	};
 

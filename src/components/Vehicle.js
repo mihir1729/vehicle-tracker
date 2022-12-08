@@ -7,56 +7,53 @@ import {
 	faToggleOff,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocationContext } from "../context/location_context";
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, child, get, onValue, once } from "firebase/database";
+import { ref, onValue } from "firebase/database";
 
-const Vehicle = ({ number, type, make, model, id, status, odometer }) => {
+const Vehicle = ({
+	registrationNumber,
+	type,
+	make,
+	model,
+	id,
+	status,
+	odometerReading,
+}) => {
+	const { firebaseSetup } = useLocationContext();
 	const [timestamp, setTimestamp] = useState();
+	const details = [
+		{ type, default: "Truck" },
+		{ make, default: "M&M" },
+		{ model, default: "LCV" },
+		{ unique_Id: id, default: 100 },
+		{ status, default: "offline" },
+		{ odometer: odometerReading, default: 50 },
+	];
 
 	useEffect(() => {
-		const firebaseConfig = {
-			apiKey: process.env.REACT_APP_FIREBASE_KEY,
-			authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-			databaseUrl: process.env.REACT_APP_DATABASE_URL,
-			storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-			appId: process.env.REACT_APP_APP_ID,
-			projectId: process.env.REACT_APP_PROJECT_ID,
-		};
-
-		const app = initializeApp(firebaseConfig);
-
-		const database = getDatabase(app);
-
-		const timestampRef = ref(database, `${id}-${number}/timestamp`);
-		onValue(timestampRef, (snapshot) => {
+		const database = firebaseSetup();
+		const timestampRef = ref(database, `${id}-${registrationNumber}/timestamp`);
+		const unsubscribe = onValue(timestampRef, (snapshot) => {
 			setTimestamp(snapshot.val());
 			console.log(snapshot.val());
 		});
-	}, []);
+
+		return unsubscribe;
+	}, [id]);
 
 	return (
 		<Wrapper>
 			<div className='vehicle'>
-				<h2 className='vehicle__number'>{number}</h2>
+				<h2 className='vehicle__number'>{registrationNumber}</h2>
 				<div className='vehicle__detail'>
-					<h3 className='vehicle__detail-type'>
-						<span>Type:</span> {type || "Truck"}
-					</h3>
-					<h3 className='vehicle__detail-make'>
-						<span>Make:</span> {make || "M&M"}
-					</h3>
-					<h3 className='vehicle__detail-model'>
-						<span>Model:</span> {model || "LCV"}
-					</h3>
-					<h3 className='vehicle__detail-id'>
-						<span>Unique Id:</span> {id || 100}
-					</h3>
-					<h3 className='vehicle__detail-status'>
-						<span>Status:</span> {status || "Offline"}
-					</h3>
-					<h3 className='vehicle__detail-odometer'>
-						<span>Odometer:</span> {odometer || 50}
-					</h3>
+					{details.map((detail, index) => {
+						const key = Object.keys(detail)[0];
+						const value = detail[key];
+						return (
+							<h3 key={index} className={`vehicle__detail-${key}`}>
+								<span>{key}:</span> {value || detail["default"]}
+							</h3>
+						);
+					})}
 				</div>
 				<div className='vehicle__icon'>
 					<FontAwesomeIcon icon={faTruckFast} />
@@ -91,6 +88,7 @@ const Wrapper = styled.div`
 			letter-spacing: 0.1rem;
 			font-size: 0.55rem;
 			color: #f9f9f9;
+			text-transform: capitalize;
 		}
 
 		&__number {

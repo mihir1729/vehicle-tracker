@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, child, get, onValue, once } from "firebase/database";
 
 const LocationContext = React.createContext();
 
 export const LocationProvider = ({ children }) => {
-	const [trackingId, setTrackingId] = useState("849-WB 69 8181");
+	const [trackingId, setTrackingId] = useState();
 
 	const folderStructure = async () => {
 		const response = await axios(
@@ -31,6 +33,10 @@ export const LocationProvider = ({ children }) => {
 						break;
 					}
 				}
+
+				if (i === len - 1 && !trackingId) {
+					setTrackingId("849-WB 69 8181");
+				}
 			}
 		}
 	};
@@ -39,8 +45,24 @@ export const LocationProvider = ({ children }) => {
 		folderStructure();
 	}, []);
 
+	const firebaseSetup = () => {
+		const firebaseConfig = {
+			apiKey: process.env.REACT_APP_FIREBASE_KEY,
+			authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+			databaseUrl: process.env.REACT_APP_DATABASE_URL,
+			storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+			appId: process.env.REACT_APP_APP_ID,
+			projectId: process.env.REACT_APP_PROJECT_ID,
+		};
+
+		const app = initializeApp(firebaseConfig);
+		const database = getDatabase(app);
+
+		return database;
+	};
+
 	return (
-		<LocationContext.Provider value={{ trackingId }}>
+		<LocationContext.Provider value={{ trackingId, firebaseSetup }}>
 			{children}
 		</LocationContext.Provider>
 	);

@@ -5,13 +5,19 @@ headers: { Authorization: `Bearer ${token}` },
 
 In the vehicles array, there is no such vehicle whose location can be fetched from database. No entry exists in database.
 
+In useEffect, we can pass a callback function as return statement which will be called upon re-render. This is done to clean the existing listeners. (https://www.pluralsight.com/guides/how-to-cleanup-event-listeners-react)
+
 router dom - done
 markers and their updates - done
 select a vehicle with ignition and movement true also speed greater than 10 - done
 map component reload - showMap error - done
-reducer
-set default vehicle id at the last iteration of loop
-refactoring - array map jsx code for repititions
+reducer - done
+set default vehicle id at the last iteration of loop - done
+refactoring - array map jsx code for repititions (done), passing multiple props at a go (done) , firebase config function at initial load at two places (done), timestamp bug fix (done), firebase listeners(done)
+map page not loading individually (done)
+
 read react hooks and see where they apply - useMemo
-website responsiveness & css 
+website responsiveness
+css - green red color of timestamp, multiple h3 headings to be clubbed (done), map - headings, lat long, general margins disruptions, loading placeholder for vehicles, timestamp and map - wherever data is fetched
+change the name home js
 project documentation - assumptions, deploy, build locally, explanation of key assessment requirements

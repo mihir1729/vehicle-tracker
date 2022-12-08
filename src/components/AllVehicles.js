@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Vehicle from "./Vehicle";
 import { useVehicleContext } from "../context/vehicle_context";
@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const AllVehicles = () => {
-	const { search, setText, filteredList, updateSearch } = useVehicleContext();
+	const { search, filteredList, updateSearch } = useVehicleContext();
 
 	return (
 		<Wrapper>
@@ -31,28 +31,7 @@ const AllVehicles = () => {
 			</div>
 			<div className='display'>
 				{filteredList.map((item, index) => {
-					const {
-						registrationNumber,
-						type,
-						id,
-						make,
-						model,
-						status,
-						odometerReading,
-					} = item;
-
-					return (
-						<Vehicle
-							key={index}
-							number={registrationNumber}
-							type={type}
-							id={id}
-							make={make}
-							model={model}
-							status={status}
-							odometer={odometerReading}
-						/>
-					);
+					return <Vehicle key={index} {...item} />;
 				})}
 			</div>
 		</Wrapper>

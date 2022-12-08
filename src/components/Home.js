@@ -2,42 +2,34 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useMemo } from "react";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, child, get, onValue, once } from "firebase/database";
+import { ref, onValue } from "firebase/database";
 import { useLocationContext } from "../context/location_context";
 
 export default function Home() {
 	const { isLoaded } = useLoadScript({
 		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
 	});
-	const { trackingId } = useLocationContext();
+	const { trackingId, firebaseSetup } = useLocationContext();
 
 	const [coordinates, setCoordinates] = useState();
 
 	useEffect(() => {
-		const firebaseConfig = {
-			apiKey: process.env.REACT_APP_FIREBASE_KEY,
-			authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-			databaseUrl: process.env.REACT_APP_DATABASE_URL,
-			storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-			appId: process.env.REACT_APP_APP_ID,
-			projectId: process.env.REACT_APP_PROJECT_ID,
-		};
+		if (trackingId) {
+			const database = firebaseSetup();
 
-		const app = initializeApp(firebaseConfig);
+			const timestampRef = ref(database, `${trackingId}/location`);
+			const unsubscribe = onValue(timestampRef, (snapshot) => {
+				console.log(
+					snapshot.val().latitude,
+					snapshot.val().longitude,
+					trackingId
+				);
+				setCoordinates([snapshot.val().latitude, snapshot.val().longitude]);
+			});
 
-		const database = getDatabase(app);
-
-		const timestampRef = ref(database, `${trackingId}/location`);
-		onValue(timestampRef, (snapshot) => {
-			console.log(
-				snapshot.val().latitude,
-				snapshot.val().longitude,
-				trackingId
-			);
-			setCoordinates([snapshot.val().latitude, snapshot.val().longitude]);
-		});
-	}, []);
+			return unsubscribe;
+		}
+	}, [trackingId]);
 
 	if (!isLoaded) {
 		return <div>Loading...</div>;
