@@ -43,6 +43,7 @@ export const LocationProvider = ({ children }) => {
 
 	useEffect(() => {
 		folderStructure();
+		// eslint-disable-next-line
 	}, []);
 
 	const firebaseSetup = () => {

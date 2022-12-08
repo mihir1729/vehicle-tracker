@@ -18,7 +18,8 @@ map page not loading individually (done)
 
 css - green red color of timestamp (temp fix with console log), multiple h3 headings to be clubbed (done), map - headings, lat long (done), general margins disruptions (done), ...loading placeholder for (vehicles, timestamp and map) - wherever data is fetched (done);
 change the name home js (done)
-project documentation - assumptions, deploy, build locally, explanation of key assessment requirements
+login (done)
+project documentation - assumptions, build locally (done), explanation of key assessment requirements
 
 read react hooks and see where they apply - useMemo
 website responsiveness
