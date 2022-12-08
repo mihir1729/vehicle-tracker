@@ -3,17 +3,19 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTable, faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { useLocationContext } from "../context/location_context";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
-	const { showMap, setShowMap } = useLocationContext();
+	let location = useLocation();
 	return (
 		<Wrapper>
 			<div className='navbar'>
 				<h1 className='navbar__heading'>TrackNerd</h1>
 				<Link to='/' className='link'>
 					<div
-						className={"navbar__page " + (!showMap ? "active" : "")}
+						className={
+							"navbar__page " + (location.pathname === "/" ? "active" : "")
+						}
 						onClick={() => setShowMap(false)}
 					>
 						<FontAwesomeIcon icon={faTable} />
@@ -22,7 +24,9 @@ const Navbar = () => {
 				</Link>
 				<Link to='/map' className='link'>
 					<div
-						className={"navbar__page " + (showMap ? "active" : "")}
+						className={
+							"navbar__page " + (location.pathname === "/map" ? "active" : "")
+						}
 						onClick={() => setShowMap(true)}
 					>
 						<FontAwesomeIcon icon={faMapLocationDot} />

@@ -4,11 +4,13 @@ import { useMemo } from "react";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, child, get, onValue, once } from "firebase/database";
+import { useLocationContext } from "../context/location_context";
 
 export default function Home() {
 	const { isLoaded } = useLoadScript({
 		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
 	});
+	const { trackingId } = useLocationContext();
 
 	const [coordinates, setCoordinates] = useState();
 
@@ -26,9 +28,13 @@ export default function Home() {
 
 		const database = getDatabase(app);
 
-		const timestampRef = ref(database, `849-WB 69 8181/location`);
+		const timestampRef = ref(database, `${trackingId}/location`);
 		onValue(timestampRef, (snapshot) => {
-			console.log(snapshot.val().latitude, snapshot.val().longitude);
+			console.log(
+				snapshot.val().latitude,
+				snapshot.val().longitude,
+				trackingId
+			);
 			setCoordinates([snapshot.val().latitude, snapshot.val().longitude]);
 		});
 	}, []);
@@ -38,7 +44,15 @@ export default function Home() {
 	}
 
 	if (coordinates) {
-		return <Map coordinates={coordinates} />;
+		return (
+			<>
+				<MapWrapper>
+					<h2>Tracking : {trackingId}</h2>
+					<h2>Lat & Long</h2>
+					<Map coordinates={coordinates} />
+				</MapWrapper>
+			</>
+		);
 	}
 }
 
@@ -72,6 +86,12 @@ function Map({ coordinates }) {
 const Wrapper = styled.div`
 	.map-container {
 		width: 50vw;
-		height: 100vh;
+		height: 80vh;
+	}
+`;
+
+const MapWrapper = styled.div`
+	h2 {
+		color: white;
 	}
 `;
