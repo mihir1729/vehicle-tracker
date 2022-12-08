@@ -16,8 +16,9 @@ set default vehicle id at the last iteration of loop - done
 refactoring - array map jsx code for repititions (done), passing multiple props at a go (done) , firebase config function at initial load at two places (done), timestamp bug fix (done), firebase listeners(done)
 map page not loading individually (done)
 
+css - green red color of timestamp (temp fix with console log), multiple h3 headings to be clubbed (done), map - headings, lat long (done), general margins disruptions (done), ...loading placeholder for (vehicles, timestamp and map) - wherever data is fetched (done);
+change the name home js (done)
+project documentation - assumptions, deploy, build locally, explanation of key assessment requirements
+
 read react hooks and see where they apply - useMemo
 website responsiveness
-css - green red color of timestamp, multiple h3 headings to be clubbed (done), map - headings, lat long, general margins disruptions, loading placeholder for vehicles, timestamp and map - wherever data is fetched
-change the name home js
-project documentation - assumptions, deploy, build locally, explanation of key assessment requirements

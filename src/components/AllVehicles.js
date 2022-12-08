@@ -6,7 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const AllVehicles = () => {
-	const { search, filteredList, updateSearch } = useVehicleContext();
+	const { search, filteredList, updateSearch, vehicleList_loading } =
+		useVehicleContext();
 
 	return (
 		<Wrapper>
@@ -29,11 +30,15 @@ const AllVehicles = () => {
 					</div>
 				</form>
 			</div>
-			<div className='display'>
-				{filteredList.map((item, index) => {
-					return <Vehicle key={index} {...item} />;
-				})}
-			</div>
+			{vehicleList_loading ? (
+				<h1 className='loading'>...Loading</h1>
+			) : (
+				<div className='display'>
+					{filteredList.map((item, index) => {
+						return <Vehicle key={index} {...item} />;
+					})}
+				</div>
+			)}
 		</Wrapper>
 	);
 };
@@ -70,6 +75,15 @@ const Wrapper = styled.div`
 				color: #525252;
 			}
 		}
+	}
+
+	.loading {
+		color: white;
+		font-family: "Jost", sans-serif;
+		text-align: center;
+		padding-right: 12rem;
+		font-size: 3rem;
+		letter-spacing: 0.2rem;
 	}
 
 	.display {

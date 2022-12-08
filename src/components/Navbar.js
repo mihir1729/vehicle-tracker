@@ -49,7 +49,7 @@ const Wrapper = styled.div`
 			font-size: 2rem;
 			letter-spacing: 0.1rem;
 			border-bottom: 0.1rem solid #525252;
-			padding: 0.5rem 3.5rem 1.5rem 0;
+			padding: 0.5rem 3.5rem 1.5rem 3rem;
 		}
 
 		&__page {

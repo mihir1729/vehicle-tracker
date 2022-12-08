@@ -19,7 +19,7 @@ const Vehicle = ({
 	odometerReading,
 }) => {
 	const { firebaseSetup } = useLocationContext();
-	const [timestamp, setTimestamp] = useState();
+	const [timestamp, setTimestamp] = useState("...Loading");
 	const details = [
 		{ type, default: "Truck" },
 		{ make, default: "M&M" },
@@ -34,10 +34,14 @@ const Vehicle = ({
 		const timestampRef = ref(database, `${id}-${registrationNumber}/timestamp`);
 		const unsubscribe = onValue(timestampRef, (snapshot) => {
 			setTimestamp(snapshot.val());
-			console.log(snapshot.val());
+			console.log(snapshot.val(), registrationNumber);
 		});
 
 		return unsubscribe;
+	}, [id]);
+
+	useEffect(() => {
+		setTimestamp("...Loading");
 	}, [id]);
 
 	return (
@@ -81,7 +85,7 @@ const Wrapper = styled.div`
 		margin: 2rem;
 		color: #efefef;
 		border-radius: 0.25rem;
-
+		text-align: center;
 		span {
 			font-weight: 400;
 			font-family: "M PLUS 1", sans-serif;
@@ -115,18 +119,25 @@ const Wrapper = styled.div`
 
 			* {
 				width: 33%;
+				text-align: center;
 			}
 		}
 
 		&__icon {
 			margin-top: 0.3rem;
 			font-size: 8rem;
+			text-align: center;
 		}
 
 		&__timestamp {
-			margin-top: 0.4rem;
+			display: inline-block;
+			margin: 0.4rem;
 			font-size: 0.8rem;
 			font-family: "Montserrat Alternates", sans-serif;
+			box-shadow: 0 0rem 0.2rem #b9b9b9;
+			letter-spacing: 0.1rem;
+			padding: 0.2rem;
+			width: max-content;
 		}
 	}
 `;

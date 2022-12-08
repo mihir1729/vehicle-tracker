@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import { Home } from "../components";
+import { MapView } from "../components";
 
 const Map = () => {
 	return (
 		<Wrapper>
 			<div className='map'>
-				<Home />
+				<MapView />
 			</div>
 		</Wrapper>
 	);

@@ -1,6 +1,6 @@
 import AllVehicles from "./AllVehicles";
 import Vehicle from "./Vehicle";
-import Home from "./Home";
+import MapView from "./MapView";
 import Navbar from "./Navbar";
 
-export { AllVehicles, Vehicle, Home, Navbar };
+export { AllVehicles, Vehicle, MapView, Navbar };
