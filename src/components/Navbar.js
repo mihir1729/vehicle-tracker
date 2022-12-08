@@ -1,49 +1,40 @@
 import React from "react";
 import styled from "styled-components";
-import { useLocationContext } from "../context/location_context";
-import { AllVehicles, Home } from "../components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTable, faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { useLocationContext } from "../context/location_context";
+import { Link } from "react-router-dom";
 
-const List = () => {
+const Navbar = () => {
 	const { showMap, setShowMap } = useLocationContext();
-
 	return (
 		<Wrapper>
 			<div className='navbar'>
 				<h1 className='navbar__heading'>TrackNerd</h1>
-				<div
-					className={"navbar__page " + (!showMap ? "active" : "")}
-					onClick={() => setShowMap(false)}
-				>
-					<FontAwesomeIcon icon={faTable} />
-					<h3 className={"navbar__page-name"}>Fleet</h3>
-				</div>
-				<div
-					className={"navbar__page " + (showMap ? "active" : "")}
-					onClick={() => setShowMap(true)}
-				>
-					<FontAwesomeIcon icon={faMapLocationDot} />
-					<h3 className='navbar__page-name'>Map</h3>
-				</div>
+				<Link to='/' className='link'>
+					<div
+						className={"navbar__page " + (!showMap ? "active" : "")}
+						onClick={() => setShowMap(false)}
+					>
+						<FontAwesomeIcon icon={faTable} />
+						<h3 className='navbar__page-name'>Fleet</h3>
+					</div>
+				</Link>
+				<Link to='/map' className='link'>
+					<div
+						className={"navbar__page " + (showMap ? "active" : "")}
+						onClick={() => setShowMap(true)}
+					>
+						<FontAwesomeIcon icon={faMapLocationDot} />
+						<h3 className='navbar__page-name'>Map</h3>
+					</div>
+				</Link>
 			</div>
-			{!showMap && (
-				<div className='list'>
-					<AllVehicles />
-				</div>
-			)}
-			{showMap && (
-				<div className='map'>
-					<Home />
-				</div>
-			)}
 		</Wrapper>
 	);
 };
 
 const Wrapper = styled.div`
-	display: flex;
-
 	.navbar {
 		width: 21vw;
 		min-height: 100vh;
@@ -78,22 +69,11 @@ const Wrapper = styled.div`
 		.active {
 			background: black;
 		}
-	}
 
-	.list {
-		display: flex;
-		min-width: 60vw;
-		flex-wrap: wrap;
-		margin-left: 28vw;
-	}
-
-	.map {
-		color: #efefef;
-		display: flex;
-		min-width: 60vw;
-		flex-wrap: wrap;
-		margin-left: 28vw;
+		.link {
+			text-decoration: none;
+		}
 	}
 `;
 
-export default List;
+export default Navbar;
