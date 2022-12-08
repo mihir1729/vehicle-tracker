@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, child, get, onValue, once } from "firebase/database";
+import { getDatabase } from "firebase/database";
 
 const LocationContext = React.createContext();
 

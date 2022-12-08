@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTable, faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
-import { useLocationContext } from "../context/location_context";
 import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {

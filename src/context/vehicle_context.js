@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import axios from "axios";
-import { liveVehicles, mockData } from "../utils/mockData";
+import { liveVehicles } from "../utils/mockData";
 import reducer from "../reducer/vehicle_reducer";
 import {
 	GET_VEHICLES_BEGIN,
