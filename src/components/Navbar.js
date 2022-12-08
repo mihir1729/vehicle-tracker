@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTable, faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { Link, useLocation } from "react-router-dom";
+import { LogoutButton } from "./index";
 
 const Navbar = () => {
 	let location = useLocation();
@@ -30,6 +31,7 @@ const Navbar = () => {
 						<h3 className='navbar__page-name'>Map</h3>
 					</div>
 				</Link>
+				<LogoutButton />
 			</div>
 		</Wrapper>
 	);

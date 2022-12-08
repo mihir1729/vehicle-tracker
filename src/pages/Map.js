@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { MapView } from "../components";
+import { MapView, Navbar } from "../components";
 
 const Map = () => {
 	return (
 		<Wrapper>
+			<Navbar />
 			<div className='map'>
 				<MapView />
 			</div>
