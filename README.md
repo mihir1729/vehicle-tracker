@@ -10,7 +10,7 @@
 
 - Save .env file locally in the repository folder
 
-### 3. Installing Dependencies & Starting Development
+### 3. Installing Dependencies & Starting Development Server
 
 - `npm install` && `npm start`
 
