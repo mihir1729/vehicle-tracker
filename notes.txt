@@ -5,4 +5,12 @@ headers: { Authorization: `Bearer ${token}` },
 
 In the vehicles array, there is no such vehicle whose location can be fetched from database. No entry exists in database.
 
-Refactoring has to be done in the end
+router dom - done
+markers and their updates - done
+select a vehicle with ignition and movement true also speed greater than 10
+map component reload - showMap error
+reducer
+refactoring - array map jsx code for repititions
+read react hooks and see where they apply - useMemo
+website responsiveness
+project documentation - assumptions, deploy, build locally, explanation of key assessment requirements
