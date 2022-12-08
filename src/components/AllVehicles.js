@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const AllVehicles = () => {
-	const { vehicleList, text, setText, filteredList } = useVehicleContext();
+	const { search, setText, filteredList, updateSearch } = useVehicleContext();
 
 	return (
 		<Wrapper>
@@ -20,10 +20,8 @@ const AllVehicles = () => {
 						<input
 							type='text'
 							placeholder='enter registration number'
-							value={text}
-							onChange={(e) => {
-								setText(e.target.value.toLowerCase());
-							}}
+							value={search}
+							onChange={updateSearch}
 						/>
 						<div className='form__control-icon'>
 							<FontAwesomeIcon icon={faMagnifyingGlass} />
