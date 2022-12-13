@@ -5,5 +5,15 @@ import Navbar from "./Navbar";
 import LoginButton from "./LoginButton";
 import LogoutButton from "./LogoutButton";
 import MiniMap from "./MiniMap";
+import SingleVehicleMap from "./SingleVehicleMap";
 
-export { AllVehicles, Vehicle, MapView, Navbar, LoginButton, LogoutButton };
+export {
+	AllVehicles,
+	Vehicle,
+	MapView,
+	Navbar,
+	LoginButton,
+	LogoutButton,
+	MiniMap,
+	SingleVehicleMap,
+};

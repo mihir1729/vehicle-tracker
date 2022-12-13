@@ -31,9 +31,10 @@ const MiniMap = ({ coordinates }) => {
 
 const Wrapper = styled.div`
 	.map-container {
+		margin: 0 auto;
 		margin-top: 1rem;
-		width: 25vw;
-		height: 35vh;
+		width: 23.5vw;
+		height: 15.5vw;
 		border-radius: 0.5rem;
 	}
 `;

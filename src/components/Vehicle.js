@@ -6,11 +6,14 @@ import {
 	faToggleOn,
 	faToggleOff,
 	faLocationDot,
+	faArrowLeft,
+	faExpand,
 } from "@fortawesome/free-solid-svg-icons";
 import { useLocationContext } from "../context/location_context";
 import { ref, onValue } from "firebase/database";
 import MiniMap from "./MiniMap";
 import { useLoadScript } from "@react-google-maps/api";
+import { Link } from "react-router-dom";
 
 const Vehicle = ({
 	registrationNumber,
@@ -38,36 +41,34 @@ const Vehicle = ({
 	];
 
 	useEffect(() => {
-		if (!showMap) {
-			const database = firebaseSetup();
-			const timestampRef = ref(
-				database,
-				`${id}-${registrationNumber}/timestamp`
-			);
-			const unsubscribe = onValue(timestampRef, (snapshot) => {
-				setTimestamp(snapshot.val());
-				console.log(snapshot.val(), registrationNumber);
-			});
+		const database = firebaseSetup();
+		const timestampRef = ref(database, `${id}-${registrationNumber}/timestamp`);
+		const unsubscribe = onValue(timestampRef, (snapshot) => {
+			setTimestamp(snapshot.val());
+			console.log(snapshot.val(), registrationNumber);
+		});
 
-			return unsubscribe;
-		} else {
-			setCoordinates();
-			const database = firebaseSetup();
-			const timestampRef = ref(
-				database,
-				`${id}-${registrationNumber}/location`
-			);
-			const unsubscribe = onValue(timestampRef, (snapshot) => {
-				setCoordinates([snapshot.val().latitude, snapshot.val().longitude]);
-			});
-
-			return unsubscribe;
-		}
-	}, [id, showMap]);
+		return unsubscribe;
+	}, [id]);
 
 	useEffect(() => {
 		setTimestamp("...Loading");
 	}, [id]);
+
+	useEffect(() => {
+		setCoordinates();
+		console.log("hello");
+		const database = firebaseSetup();
+		const timestampRef = ref(database, `${id}-${registrationNumber}/location`);
+		const unsubscribe = onValue(timestampRef, (snapshot) => {
+			if (snapshot.val()) {
+				setCoordinates([snapshot.val().latitude, snapshot.val().longitude]);
+				console.log([snapshot.val().latitude, snapshot.val().longitude]);
+			}
+		});
+
+		return unsubscribe;
+	}, []);
 
 	if (showMap && (!isLoaded || !coordinates)) {
 		return (
@@ -85,11 +86,35 @@ const Vehicle = ({
 						<h2 className='vehicle__number'>{registrationNumber}</h2>
 						<FontAwesomeIcon
 							icon={faLocationDot}
-							className='vehicle__icon-pin green'
+							className={
+								coordinates
+									? "vehicle__icon-pin green"
+									: "vehicle__icon-pin red"
+							}
 							onClick={() => setShowMap(!showMap)}
 						/>
 					</div>
 					<MiniMap coordinates={coordinates} />
+					<div className='navigation'>
+						<button onClick={() => setShowMap(!showMap)}>
+							<FontAwesomeIcon icon={faArrowLeft} />
+						</button>
+						{timestamp && (
+							<div className='vehicle__timestamp'>
+								<FontAwesomeIcon icon={faToggleOn} /> {timestamp}
+							</div>
+						)}
+						{!timestamp && (
+							<div className='vehicle__timestamp'>
+								<FontAwesomeIcon icon={faToggleOff} /> No Timestamp
+							</div>
+						)}
+						<Link to={`/map/${id}-${registrationNumber}`} target='_blank'>
+							<button>
+								<FontAwesomeIcon icon={faExpand} />
+							</button>
+						</Link>
+					</div>
 				</div>
 			</MapWrapper>
 		);
@@ -102,7 +127,9 @@ const Vehicle = ({
 					<h2 className='vehicle__number'>{registrationNumber}</h2>
 					<FontAwesomeIcon
 						icon={faLocationDot}
-						className='vehicle__icon-pin green'
+						className={
+							coordinates ? "vehicle__icon-pin green" : "vehicle__icon-pin red"
+						}
 						onClick={() => setShowMap(!showMap)}
 					/>
 				</div>
@@ -157,10 +184,15 @@ const MapWrapper = styled.div`
 			font-size: 1.2rem;
 			padding-top: 0.7rem;
 			padding-right: 1rem;
+			cursor: pointer;
 		}
 
 		.green {
-			color: green;
+			color: #99d566;
+		}
+
+		.red {
+			color: #a63747;
 		}
 
 		&__number {
@@ -169,6 +201,35 @@ const MapWrapper = styled.div`
 			letter-spacing: 0.15rem;
 			text-align: start;
 			padding: 1rem 0 0 1.2rem;
+		}
+
+		.navigation {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			button {
+				font-size: 1rem;
+				margin: 0 1.3rem;
+				margin-top: 1rem;
+				color: #969696;
+				background: black;
+				border-radius: 0.5rem;
+				border-color: transparent;
+				box-shadow: 0 0 0.4rem #b9b9b9;
+				cursor: pointer;
+			}
+		}
+
+		&__timestamp {
+			display: inline-block;
+			/* margin: 0.4rem; */
+			margin-top: 1rem;
+			font-size: 0.8rem;
+			font-family: "Montserrat Alternates", sans-serif;
+			box-shadow: 0 0rem 0.2rem #b9b9b9;
+			letter-spacing: 0.1rem;
+			padding: 0.2rem;
+			width: max-content;
 		}
 	}
 `;
@@ -195,10 +256,15 @@ const Wrapper = styled.div`
 			font-size: 1.2rem;
 			padding-top: 0.7rem;
 			padding-right: 1rem;
+			cursor: pointer;
 		}
 
 		.green {
-			color: green;
+			color: #99d566;
+		}
+
+		.red {
+			color: #a63747;
 		}
 
 		span {
