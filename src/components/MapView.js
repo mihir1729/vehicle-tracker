@@ -9,13 +9,13 @@ export default function MapView() {
 		googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
 	});
 	const { trackingId, firebaseSetup } = useLocationContext();
-
 	const [coordinates, setCoordinates] = useState();
 
 	useEffect(() => {
 		if (trackingId) {
-			const database = firebaseSetup();
+			setCoordinates();
 
+			const database = firebaseSetup();
 			const timestampRef = ref(database, `${trackingId}/location`);
 			const unsubscribe = onValue(timestampRef, (snapshot) => {
 				console.log(
@@ -30,7 +30,7 @@ export default function MapView() {
 		}
 	}, [trackingId]);
 
-	if (!isLoaded) {
+	if (!isLoaded || !coordinates) {
 		return (
 			<MapWrapper>
 				<div className='loading'>Loading...</div>
@@ -42,13 +42,15 @@ export default function MapView() {
 		return (
 			<>
 				<MapWrapper>
-					<h2 className='vehicle'>
-						Tracking : <span> {trackingId} </span>
-					</h2>
-					<h2 className='coordinates'>
-						Lat : <span>{coordinates[0]}</span>
-						Long : <span>{coordinates[1]}</span>
-					</h2>
+					<div className='details'>
+						<h2 className='vehicle'>
+							Tracking : <span> {trackingId} </span>
+						</h2>
+						<h2 className='coordinates'>
+							Lat : <span>{coordinates[0]}</span>
+							Long : <span>{coordinates[1]}</span>
+						</h2>
+					</div>
 					<Map coordinates={coordinates} />
 				</MapWrapper>
 			</>
@@ -64,13 +66,13 @@ function Map({ coordinates }) {
 	useEffect(() => {
 		setLat(coordinates[0]);
 		setLong(coordinates[1]);
-		setCenter({ lat: lat, lng: long });
+		setCenter({ lat: coordinates[0], lng: coordinates[1] });
 	}, [coordinates]);
 
 	return (
 		<Wrapper>
 			<GoogleMap
-				zoom={10}
+				zoom={15}
 				center={center}
 				mapContainerClassName='map-container'
 			>
@@ -85,14 +87,19 @@ function Map({ coordinates }) {
 
 const Wrapper = styled.div`
 	.map-container {
-		margin-top: 2rem;
+		margin-top: 1rem;
 		width: 50vw;
-		height: 77vh;
+		height: 70vh;
 		border-radius: 0.5rem;
 	}
 `;
 
 const MapWrapper = styled.div`
+	.details {
+		display: flex;
+		margin-top: 2rem;
+	}
+
 	h2 {
 		color: white;
 	}
@@ -111,9 +118,11 @@ const MapWrapper = styled.div`
 
 	.coordinates {
 		margin: 1.5rem 0;
+		margin-left: 2rem;
 		font-family: "M PLUS 1", sans-serif;
 		letter-spacing: 0.1rem;
 		font-size: 0.8rem;
+		transform: translateY(0.2rem);
 		span {
 			margin-right: 3rem;
 			font-size: 1.2rem;
@@ -123,9 +132,9 @@ const MapWrapper = styled.div`
 	}
 
 	.loading {
+		margin-top: 2rem;
 		color: white;
 		font-family: "Jost", sans-serif;
-		text-align: center;
 		font-size: 3rem;
 		letter-spacing: 0.2rem;
 	}

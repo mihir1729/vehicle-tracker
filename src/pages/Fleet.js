@@ -1,25 +1,20 @@
 import React from "react";
 import styled from "styled-components";
 import { AllVehicles, Navbar, LoginButton } from "../components";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useLoginContext } from "../context/login_context";
 
 const Fleet = () => {
-	const { user, isAuthenticated, isLoading } = useAuth0();
-	const isUser = user && isAuthenticated;
+	const { login_success, login_error } = useLoginContext();
 
-	if (isLoading) {
-		return (
-			<Wrapper>
-				<h2 className='load'>...Logging in</h2>
-			</Wrapper>
-		);
-	}
-
-	if (!isUser) {
+	if (!login_success) {
 		return <LoginButton />;
 	}
 
-	if (isUser) {
+	if (login_error) {
+		return <LoginButton />;
+	}
+
+	if (login_success) {
 		return (
 			<Wrapper>
 				<Navbar />

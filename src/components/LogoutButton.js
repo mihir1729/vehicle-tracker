@@ -1,18 +1,18 @@
 import React from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import styled from "styled-components";
+import { useLoginContext } from "../context/login_context";
+import { Link } from "react-router-dom";
 
 const LogoutButton = () => {
-	const { logout } = useAuth0();
+	const { logout } = useLoginContext();
 
 	return (
 		<Wrapper>
-			<button
-				onClick={() => logout({ returnTo: window.location.origin })}
-				className='.btn'
-			>
-				Log Out
-			</button>
+			<Link to={`/`}>
+				<button onClick={() => logout()} className='.btn'>
+					Log Out
+				</button>
+			</Link>
 		</Wrapper>
 	);
 };

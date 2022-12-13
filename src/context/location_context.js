@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
@@ -7,13 +7,14 @@ const LocationContext = React.createContext();
 
 export const LocationProvider = ({ children }) => {
 	const [trackingId, setTrackingId] = useState();
+	const trackingIdInputRef = useRef();
 
 	const folderStructure = async () => {
 		const response = await axios(
 			"https://tracknerd-staging-default-rtdb.firebaseio.com/.json"
 		);
 		const data = response.data;
-
+		console.log(data);
 		if (data) {
 			const len = Object.keys(data).length;
 
@@ -62,8 +63,27 @@ export const LocationProvider = ({ children }) => {
 		return database;
 	};
 
+	const trackNewVehicle = () => {
+		setTrackingId(trackingIdInputRef.current.value);
+	};
+
+	const trackKeyDown = (e) => {
+		if (e.keyCode === 13) {
+			trackNewVehicle();
+		}
+	};
+
 	return (
-		<LocationContext.Provider value={{ trackingId, firebaseSetup }}>
+		<LocationContext.Provider
+			value={{
+				trackingId,
+				setTrackingId,
+				firebaseSetup,
+				trackingIdInputRef,
+				trackNewVehicle,
+				trackKeyDown,
+			}}
+		>
 			{children}
 		</LocationContext.Provider>
 	);

@@ -9,6 +9,7 @@ import {
 	UPDATE_SEARCH,
 	FILTER_VEHICLES,
 } from "../actions";
+import { useLoginContext } from "./login_context";
 
 const initialState = {
 	vehicleList: [],
@@ -24,34 +25,32 @@ const rootUrl = "https://staging-api.tracknerd.io/v1/";
 
 export const VehicleProvider = ({ children }) => {
 	const [state, dispatch] = useReducer(reducer, initialState);
+	const { token } = useLoginContext();
 
 	const fetchVehicles = async (url) => {
 		dispatch({ type: GET_VEHICLES_BEGIN });
 
 		try {
-			const login = await axios.post(`${url}auth/login`, {
-				username: process.env.REACT_APP_USERNAME,
-				password: process.env.REACT_APP_PASSWORD,
-			});
+			if (token) {
+				const vehicles = await axios.get(`${url}vehicle-groups/vehicles`, {
+					headers: { Authorization: `Bearer ${token}` },
+				});
 
-			const vehicles = await axios.get(`${url}vehicle-groups/vehicles`, {
-				headers: { Authorization: `Bearer ${login.data.token}` },
-			});
+				const dataset = vehicles.data.data;
+				let vehicleArray = [];
 
-			const dataset = vehicles.data.data;
-			let vehicleArray = [];
+				if (dataset) {
+					for (let i = 0; i < dataset.length; i++) {
+						if (i === 0) {
+							vehicleArray = [...dataset[i].vehicles];
+						} else {
+							vehicleArray = [...vehicleArray, ...dataset[i].vehicles];
+						}
 
-			if (dataset) {
-				for (let i = 0; i < dataset.length; i++) {
-					if (i === 0) {
-						vehicleArray = [...dataset[i].vehicles];
-					} else {
-						vehicleArray = [...vehicleArray, ...dataset[i].vehicles];
-					}
-
-					if (i === dataset.length - 1) {
-						vehicleArray = [...liveVehicles, ...vehicleArray];
-						dispatch({ type: GET_VEHICLES_SUCCESS, payload: vehicleArray });
+						if (i === dataset.length - 1) {
+							vehicleArray = [...liveVehicles, ...vehicleArray];
+							dispatch({ type: GET_VEHICLES_SUCCESS, payload: vehicleArray });
+						}
 					}
 				}
 			}
@@ -68,7 +67,7 @@ export const VehicleProvider = ({ children }) => {
 
 	useEffect(() => {
 		fetchVehicles(rootUrl);
-	}, []);
+	}, [token]);
 
 	useEffect(() => {
 		dispatch({ type: FILTER_VEHICLES });
