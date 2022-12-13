@@ -57,7 +57,6 @@ const Vehicle = ({
 
 	useEffect(() => {
 		setCoordinates();
-		console.log("hello");
 		const database = firebaseSetup();
 		const timestampRef = ref(database, `${id}-${registrationNumber}/location`);
 		const unsubscribe = onValue(timestampRef, (snapshot) => {
@@ -68,7 +67,7 @@ const Vehicle = ({
 		});
 
 		return unsubscribe;
-	}, []);
+	}, [id]);
 
 	if (showMap && (!isLoaded || !coordinates)) {
 		return (
