@@ -90,7 +90,11 @@ const Vehicle = ({
 									? "vehicle__icon-pin green"
 									: "vehicle__icon-pin red"
 							}
-							onClick={() => setShowMap(!showMap)}
+							onClick={() => {
+								if (coordinates) {
+									setShowMap(!showMap);
+								}
+							}}
 						/>
 					</div>
 					<MiniMap coordinates={coordinates} />
@@ -129,7 +133,11 @@ const Vehicle = ({
 						className={
 							coordinates ? "vehicle__icon-pin green" : "vehicle__icon-pin red"
 						}
-						onClick={() => setShowMap(!showMap)}
+						onClick={() => {
+							if (coordinates) {
+								setShowMap(!showMap);
+							}
+						}}
 					/>
 				</div>
 				<div className='vehicle__detail'>
