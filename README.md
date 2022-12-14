@@ -17,8 +17,3 @@
 ### 4. Open Browser
 
 - `http://localhost:3000/`
-
-### 5. Logging In
-
-- Email: `test@gmail.com`
-- Password: `@Test123`
